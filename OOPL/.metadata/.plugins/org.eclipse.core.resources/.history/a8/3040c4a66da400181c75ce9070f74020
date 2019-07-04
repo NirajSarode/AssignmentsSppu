@@ -1,0 +1,19 @@
+#include <iostream>
+#include <string.h>
+#include <stack>
+using namespace std;
+
+class stck
+{
+public:
+	void insert(stack <int> gq)
+	{
+	    stack <int> s = gq;
+	    while (!s.empty())
+	    {
+	        cout << '\t' << s.top();
+	        s.pop();
+	    }
+	    cout << '\n';
+	}
+};

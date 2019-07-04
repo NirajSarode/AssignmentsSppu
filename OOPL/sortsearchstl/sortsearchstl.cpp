@@ -1,0 +1,53 @@
+#include<iostream>
+#include<algorithm>
+#include<string.h>
+using namespace std;
+class person
+{
+public:
+	string name,dob;
+	long no;
+	void get()
+	{
+		cout<<"Enter Name"<<endl;
+		cin>>name;
+		cout<<"Enter Date of Birth"<<endl;
+		cin>>dob;
+		cout<<"Enter Mobile Number"<<endl;
+		cin>>no;
+	}
+	void put()
+	{
+		cout<<"Person Record"<<endl;
+		cout<<"Name : "<<name<<endl;
+		cout<<"Date of Birth : "<<dob<<endl;
+		cout<<"Mobile Number : "<<no<<endl;
+	}
+};
+int main()
+{
+	int n,i,j;
+	cout<<"Enter the number of records"<<endl;
+	cin>>n;
+	person p[n];
+	string a[n];
+	for(i=0;i<n;i++)
+	{
+		p[i].get();
+		a[i]=p[i].name;
+	}
+	sort(a,a+n);
+	cout<<"Sorting By Name :-"<<endl;
+	for(i=0;i<n;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+			if(a[i]==p[j].name)
+				p[j].put();
+		}
+	}
+
+
+
+
+}

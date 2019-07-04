@@ -1,0 +1,42 @@
+#include <iostream>
+#include <string.h>
+#include<fstream>
+using namespace std;
+
+int main()
+{
+	string line;
+
+	ofstream f;
+	cout<<"Enter the data : "<<endl;
+	getline(cin,line);
+	cin>>ws;
+
+	f.open("Student.txt",ios::out);
+	if(!f)
+	{
+		cout<<"Sorry could not open file"<<endl;
+	}
+	else
+	{
+		f<<line<<endl;
+		f.close();
+	}
+
+	ifstream If;
+	If.open("Student.txt",ios::in);
+
+	if(!If.is_open())
+	{
+		cout<<"File does not exist"<<endl;
+	}
+	else
+	{
+		while(getline(If,line))
+		{
+			cout<<line<<endl;;
+
+		}
+		If.close();
+	}
+}

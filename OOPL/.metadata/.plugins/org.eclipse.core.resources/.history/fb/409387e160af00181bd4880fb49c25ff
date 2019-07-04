@@ -1,0 +1,16 @@
+#include <iostream>
+#include <string.h>
+#include<fstream>
+using namespace std;
+
+int main()
+{
+	string line;
+	cout<<"Enter the data : "<<endl;
+	cin>>line;
+
+	ofstream out("new.txt")
+	out<<line;
+
+
+}

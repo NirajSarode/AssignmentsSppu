@@ -1,0 +1,1 @@
+stackqueue.d: ../stackqueue.cpp

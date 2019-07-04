@@ -1,0 +1,6 @@
+16:20:53 **** Incremental Build of configuration Debug for project filehandling ****
+make all 
+make: Nothing to be done for `all'.
+
+16:20:53 Build Finished (took 91ms)
+

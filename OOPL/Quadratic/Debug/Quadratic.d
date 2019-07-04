@@ -1,0 +1,1 @@
+Quadratic.d: ../Quadratic.cpp

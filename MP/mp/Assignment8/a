@@ -1,0 +1,179 @@
+section .data
+error1:	db "Enter a valid command.", 0x0A
+elen:	equ $-error1
+ferr:	db "File not opened successfully.", 0x0A
+flen:	equ $-ferr
+count:	dq 0
+
+section .bss
+fname1:	resb 8
+fname2:	resb 8
+fname3:	resb 8
+fd1:	resb 8
+fd2:	resb 8
+message:resb 100
+
+%macro print 3
+mov rax, 1
+mov rdi, %1
+mov rsi, %2
+mov rdx, %3
+syscall
+%endmacro
+
+%macro read 3
+mov rax, 0
+mov rdi, %1
+mov rsi, %2
+mov rdx, %3
+syscall
+%endmacro
+
+%macro open 1
+mov rax, 2
+mov rdi, %1
+mov rsi, 2
+mov rdx, 0777
+syscall
+%endmacro
+
+%macro close 1
+mov rax, 3
+mov rdi, %1
+syscall
+%endmacro
+
+section .text
+global _start
+_start:
+	xor rax, rax
+	pop rbx
+	pop rbx
+	pop rbx
+	mov rsi, rbx
+	mov al, byte[rbx]
+	cmp al, 'T'
+	je fun1
+	cmp al, 'C'
+	je fun2
+	cmp al, 'D'
+	je fun3
+	jmp error
+	
+fun1:	inc rsi
+	mov al, byte[rsi]
+	cmp al, 'Y'
+	jne error
+	inc rsi
+	mov al, byte[rsi]
+	cmp al, 'P'
+	jne error
+	inc rsi
+	mov al, byte[rsi]
+	cmp al, 'E'
+	jne error
+	pop rbx
+	mov rsi, fname1
+up1:	mov al, byte[rbx]
+	mov byte[rsi], al
+	inc rsi
+	inc rbx
+	cmp byte[rbx], '0'
+	jne up1
+	open fname1
+	call check
+	mov qword[fd1], rax
+	read qword[fd1], message, 100
+	mov qword[count], rax
+	print 1, message, qword[count]
+	jmp exit
+
+fun2:	inc rsi
+	mov al, byte[rsi]
+	cmp al, 'O'
+	jne error
+	inc rsi
+	mov al, byte[rsi]
+	cmp al, 'P'
+	jne error
+	inc rsi
+	mov al, byte[rsi]
+	cmp al, 'Y'
+	jne error
+	pop rbx
+	mov rsi, fname1
+up2:	mov al, byte[rbx]
+	mov byte[rsi], al
+	inc rsi
+	inc rbx
+	cmp byte[rbx], '0'
+	jne up2
+	pop rbx
+	mov rsi, fname2
+up3:	mov al, byte[rbx]
+	mov byte[rsi], al
+	inc rsi
+	inc rbx
+	cmp byte[rbx], '0'
+	jne up3
+	open fname1
+	call check
+	mov qword[fd1], rax
+	read qword[fd1], message, 100
+	mov qword[count], rax
+	close qword[fd1]
+	open fname2
+	call check
+	mov qword[fd2], rax
+	print qword[fd2], message, qword[count]
+	close qword[fd2]
+	print 1, message, qword[count]
+	jmp exit
+	
+fun3:	inc rsi
+	mov al, byte[rsi]
+	cmp al, 'E'
+	jne error
+	inc rsi
+	mov al, byte[rsi]
+	cmp al, 'L'
+	jne error
+	inc rsi
+	mov al, byte[rsi]
+	cmp al, 'E'
+	jne error
+	inc rsi
+	mov al, byte[rsi]
+	cmp al, 'T'
+	jne error
+	inc rsi
+	mov al, byte[rsi]
+	cmp al, 'E'
+	jne error
+	pop rbx
+	mov rsi, fname3
+up4:	mov al, byte[rbx]
+	mov byte[rsi], al
+	inc rsi
+	inc rbx
+	cmp byte[rbx], '0'
+	jne up4
+break1:	mov rax, 87
+	mov rdi, fname3
+	syscall
+	open fname3
+	call check
+	jmp exit
+
+check:	bt rax, 63
+	jnc next
+	print 1, ferr, flen
+	jmp exit
+next:	ret
+
+error:
+	print 1, error1, elen
+exit:
+	mov rax, 60
+	mov rdi, 0
+	syscall
